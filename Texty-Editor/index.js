@@ -1,4 +1,9 @@
 const { app, BrowserWindow } = require("electron");
+const ipc = require("electron").ipcMain;
+
+ipc.on("create-new-win", () => {
+    createWindow();
+})
 
 const createWindow = () => {
     const win = new BrowserWindow({
