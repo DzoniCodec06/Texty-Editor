@@ -65,3 +65,7 @@ body {
 .menu p:active {
     background-color: #0000003b;
 }
+
+input[type="file"] {
+    display: none;
+}
