@@ -1,3 +1,5 @@
+const ipc = require('electron').ipcRenderer;
+
 const scriptInput = document.getElementById("script");
 const rowsIndentifier = document.getElementById("rows-indentifier");
 
@@ -6,6 +8,8 @@ const saveButton = document.getElementById("save-btn");
 const openFile = document.getElementById("fileOpen");
 
 const fileInput = document.getElementById("fileInput");
+
+const newFileButton = document.getElementById("newFile");
 
 let n = 1;
 
@@ -69,6 +73,10 @@ fileInput.addEventListener("change", (event) => {
 
         reader.readAsText(file);
     }
+})
+
+newFileButton.addEventListener("click", () => {
+    ipc.send("create-new-win");
 })
 
 addNewRow();
