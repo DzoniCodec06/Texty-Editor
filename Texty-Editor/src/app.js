@@ -13,6 +13,8 @@ const newFileButton = document.getElementById("newFile");
 
 let n = 1;
 
+let k = 0;
+
 let text;
 
 function addNewRow() {
@@ -26,30 +28,54 @@ function addNewRow() {
 }
 
 function removeLastRow() {
-    if (rowsIndentifier.children.length > 1) {
-        rowsIndentifier.removeChild(rowsIndentifier.lastChild);
-        n--;
-        scriptInput.rows = n - 1;
-    }
+    rowsIndentifier.removeChild(rowsIndentifier.lastChild);
+    n--;
+    scriptInput.rows = n - 1;
+    //if (rowsIndentifier.children.length > 1) {
+    //
+    //}
 }
 
-scriptInput.addEventListener("change", () => {
-    text = scriptInput.value.split("\n");
-})
-
-
-document.addEventListener("keydown", e => {
-    if (e.key == "Enter") addNewRow();
-    else if (e.key == "Backspace" && e.data == null) removeLastRow();
-    console.log(scriptInput.rows);
-}); 
-
-saveButton.addEventListener("click", () => {
+function saveFile() {
     const blob = new Blob([scriptInput.value], { type: "text/plain" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
     a.download = "textFile.txt";
     a.click();
+}
+
+
+document.addEventListener("keydown", e => {
+    if (!e.ctrlKey) {
+        if (e.key == "Enter") {
+            addNewRow();
+            k++;
+        } 
+        else if (e.key == "Backspace" && text[k][0] === undefined && k > 0) {
+            removeLastRow();
+            k--;
+        }
+    } else if (e.ctrlKey && e.key == "s") {
+        console.log("CTRL + S");
+        saveFile();
+    } else if (e.ctrlKey && e.key == "o") {
+        console.log("CTRL + O");
+        fileInput.click();
+    } else if (e.ctrlKey && e.key == "n") {
+        console.log("CTRL + N");
+        ipc.send("create-new-win");
+    }
+    
+}); 
+
+scriptInput.addEventListener("input", () => {
+    text = scriptInput.value.split("\n");
+
+    console.log(`Value at line: ${n} is ${text[n]}`);
+})
+
+saveButton.addEventListener("click", () => {
+    saveFile();
 })
 
 openFile.addEventListener("click", () => {
@@ -66,9 +92,9 @@ fileInput.addEventListener("change", (event) => {
             const fileContent = e.target.result;
             scriptInput.value = fileContent;
 
-            const lines = fileContent.split("\n");
+            text = fileContent.split("\n");
 
-            for (let i = 1; i < lines.length; i++) addNewRow();
+            for (k = 1; k < text.length; k++) addNewRow();
         };
 
         reader.readAsText(file);
