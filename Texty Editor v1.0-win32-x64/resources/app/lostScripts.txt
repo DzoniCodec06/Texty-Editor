@@ -1,0 +1,25 @@
+//const ipc = require('electron').ipcRenderer;
+
+//const fs = require("fs");
+
+/*
+fileSelectBtn.addEventListener("click", function (e) {
+    ipc.send("open-folder-dialog");
+});
+
+ipc.on("selected-folder", function (e, path) {
+    console.log(`You selected: ${path}`);
+});
+*/
+
+//const ipc = require("electron").ipcMain;
+//const dialog = require("electron").dialog;
+/*
+ipc.on("open-folder-dialog", function (e) {
+    dialog.showOpenDialog({
+        properties: ["openDirectory"]
+    }, function (folders) {
+        e.sender.send("selected-folder", folders);
+        console.log(folders);
+    })
+});*/
